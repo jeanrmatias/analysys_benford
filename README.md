@@ -1,4 +1,4 @@
-# Lei de Newcomb-Benford — análise comparativa de 3 bases
+# Lei de Newcomb-Benford - análise comparativa de 3 bases
 
 Página web estática que carrega até três bases de dados, aplica a lei de
 Newcomb-Benford sobre o primeiro dígito e compara os resultados.
@@ -36,8 +36,8 @@ use a extensão **Live Server** do VS Code ou rode `npx serve .` na pasta.
 
 O seletor no topo controla a leitura:
 
-- **Brasileiro** — ponto é milhar, vírgula é decimal (`1.234,56`).
-- **Internacional** — vírgula é milhar, ponto é decimal (`1,234.56`).
+- **Brasileiro** - ponto é milhar, vírgula é decimal (`1.234,56`).
+- **Internacional** - vírgula é milhar, ponto é decimal (`1,234.56`).
 
 Atenção: no modo brasileiro, `0.045` é lido como 45. Planilhas reais entregam
 números já tipados e não passam por essa conversão.
