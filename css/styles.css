@@ -1,0 +1,259 @@
+:root {
+  --fundo: #f5f6f8;
+  --superficie: #ffffff;
+  --texto: #1f2933;
+  --texto-suave: #62728c;
+  --borda: #dde2e8;
+  --primaria: #2563eb;
+  --ok: #15803d;
+  --atencao: #b45309;
+  --alerta: #b91c1c;
+  --raio: 10px;
+  --sombra: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--fundo);
+  color: var(--texto);
+  line-height: 1.55;
+  font-size: 15px;
+}
+
+/* ---------- Cabeçalho ---------- */
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 24px clamp(16px, 4vw, 40px);
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borda);
+}
+
+.topo h1 { margin: 0; font-size: 22px; letter-spacing: -.2px; }
+.topo p { margin: 4px 0 0; color: var(--texto-suave); font-size: 14px; }
+
+.topo-config {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.topo-config label { font-size: 13px; color: var(--texto-suave); }
+
+/* ---------- Estrutura ---------- */
+main {
+  padding: 24px clamp(16px, 4vw, 40px) 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.secao {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--sombra);
+}
+
+.secao h2 { margin: 0 0 4px; font-size: 17px; }
+.dica { margin: 0 0 16px; color: var(--texto-suave); font-size: 14px; }
+.nota-rodape { margin: 12px 0 0; color: var(--texto-suave); font-size: 12.5px; }
+.nota ul { margin: 8px 0 0; padding-left: 20px; color: var(--texto-suave); font-size: 14px; }
+.nota li { margin-bottom: 4px; }
+
+/* ---------- Grade de bases ---------- */
+.grade-bases {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+.card {
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 16px;
+  background: #fcfcfd;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-topo { display: flex; align-items: center; gap: 8px; }
+
+.card-numero {
+  width: 24px; height: 24px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--primaria);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card-nome {
+  flex: 1;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 15px;
+  color: var(--texto);
+}
+.card-nome:hover { border-color: var(--borda); }
+.card-nome:focus { border-color: var(--primaria); outline: none; background: #fff; }
+
+.card-fonte { display: flex; flex-direction: column; gap: 6px; }
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 13.5px;
+  padding: 7px 9px;
+  border: 1px solid var(--borda);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--texto);
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid rgba(37, 99, 235, .25);
+  border-color: var(--primaria);
+}
+textarea { resize: vertical; }
+
+/* ---------- Abas ---------- */
+.abas {
+  display: flex;
+  gap: 4px;
+  background: #eef1f5;
+  padding: 3px;
+  border-radius: 8px;
+}
+
+.aba {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--texto-suave);
+  cursor: pointer;
+  font-family: inherit;
+}
+.aba:hover { color: var(--texto); }
+.aba.ativa { background: #fff; color: var(--texto); font-weight: 600; box-shadow: var(--sombra); }
+
+.painel { display: flex; flex-direction: column; gap: 8px; }
+.painel label { font-size: 12.5px; color: var(--texto-suave); }
+.coluna small { color: var(--texto-suave); font-size: 12px; }
+
+.escondido { display: none !important; }
+
+/* ---------- Botões ---------- */
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--borda);
+  background: #fff;
+  color: var(--texto);
+  cursor: pointer;
+}
+.btn:hover { background: #f2f4f7; }
+.btn-primario { background: var(--primaria); border-color: var(--primaria); color: #fff; }
+.btn-primario:hover { background: #1d4ed8; }
+.btn-secundario { background: #fff; }
+.btn-texto {
+  border: none;
+  background: transparent;
+  color: var(--texto-suave);
+  font-size: 12.5px;
+  padding: 4px 6px;
+}
+.btn-texto:hover { color: var(--alerta); background: transparent; }
+
+/* ---------- Métricas ---------- */
+.metricas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.metrica {
+  background: #fff;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metrica .rotulo {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--texto-suave);
+}
+
+.metrica .valor {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.selo {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+.selo.ok { background: #dcfce7; color: var(--ok); }
+.selo.atencao { background: #fef3c7; color: var(--atencao); }
+.selo.alerta { background: #fee2e2; color: var(--alerta); }
+
+.vazio { color: var(--texto-suave); font-size: 13px; margin: 0; }
+
+/* ---------- Gráficos ---------- */
+.grafico-wrap { position: relative; height: 210px; }
+.grafico-grande { position: relative; height: 340px; margin-bottom: 16px; }
+
+/* ---------- Tabela ---------- */
+.tabela-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+th, td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--borda);
+  vertical-align: top;
+}
+
+th {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--texto-suave);
+  background: #fafbfc;
+}
+
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td a { color: var(--primaria); }
+
+@media (max-width: 640px) {
+  .topo { flex-direction: column; align-items: stretch; }
+  .grade-bases { grid-template-columns: 1fr; }
+}

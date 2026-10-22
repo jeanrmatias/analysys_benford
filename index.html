@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lei de Benford - análise comparativa de 3 bases</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <header class="topo">
+    <div class="topo-titulo">
+      <h1>Lei de Newcomb-Benford</h1>
+      <p>Compare até três bases de dados pela distribuição do primeiro dígito.</p>
+    </div>
+    <div class="topo-config">
+      <label for="formato">Formato numérico</label>
+      <select id="formato">
+        <option value="br">Brasileiro - 1.234,56</option>
+        <option value="en">Internacional - 1,234.56</option>
+      </select>
+      <button type="button" id="btn-limpar-tudo" class="btn btn-secundario">Limpar tudo</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="secao">
+      <h2>Bases de dados</h2>
+      <p class="dica">Carregue um arquivo CSV ou XLSX, cole os números ou gere uma amostra aleatória em cada base.</p>
+      <div id="bases" class="grade-bases"></div>
+    </section>
+
+    <section class="secao">
+      <h2>Comparativo das bases</h2>
+      <div class="grafico-grande">
+        <canvas id="grafico-comparativo"></canvas>
+      </div>
+      <div class="tabela-wrap">
+        <table id="tabela-resumo">
+          <thead>
+            <tr>
+              <th>Base</th><th>Fonte</th><th class="num">n</th>
+              <th class="num">MAD</th><th class="num">Qui-quadrado</th><th>Veredito</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="nota-rodape">
+        MAD: até 0,006 conformidade próxima · até 0,012 aceitável · até 0,015 marginal · acima, não conformidade.
+        Qui-quadrado crítico com 8 graus de liberdade: 15,507 (5%) e 20,090 (1%).
+      </p>
+    </section>
+
+    <section class="secao">
+      <h2>Por que nem todo número aleatório segue Benford</h2>
+      <p>
+        A lei aparece em conjuntos que atravessam várias ordens de grandeza e crescem de forma multiplicativa -
+        população, receita, áreas, patrimônio. Números sorteados com distribuição uniforme ficam todos dentro da
+        mesma faixa e por isso espalham os dígitos de forma parecida.
+      </p>
+      <p>
+        Use a aba <strong>Aleatório</strong> de cada base para comparar: as opções "uniformes" tendem a divergir da
+        lei, enquanto "log-uniforme" e "Benford puro" tendem a aderir. É a demonstração mais direta do conceito.
+      </p>
+    </section>
+
+    <section class="secao nota">
+      <h2>Limitações da análise</h2>
+      <ul>
+        <li>Amostras abaixo de 100 números produzem MAD instável; abaixo de 1.000 a análise é frágil.</li>
+        <li>Dados limitados por faixa (notas de 0 a 10, percentuais) dificilmente aderem à lei.</li>
+        <li>Números atribuídos (CPF, CNPJ, telefone, códigos sequenciais) não seguem Benford.</li>
+        <li>Divergência não prova fraude: indica anomalia que merece investigação.</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Modelo de cartão clonado três vezes pelo JavaScript -->
+  <template id="modelo-base">
+    <article class="card" data-indice="0">
+      <header class="card-topo">
+        <span class="card-numero">1</span>
+        <input class="card-nome" type="text" data-campo="nome" placeholder="Nome da base" />
+        <button type="button" class="btn btn-texto" data-acao="limpar">Limpar</button>
+      </header>
+
+      <div class="card-fonte">
+        <input type="text" data-campo="fonte" placeholder="Fonte (ex.: IBGE - População estimada)" />
+        <input type="url" data-campo="url" placeholder="URL da fonte (opcional)" />
+      </div>
+
+      <nav class="abas">
+        <button type="button" class="aba ativa" data-aba="upload">Upload</button>
+        <button type="button" class="aba" data-aba="colar">Colar ou digitar</button>
+        <button type="button" class="aba" data-aba="aleatorio">Aleatório</button>
+      </nav>
+
+      <div class="painel" data-painel="upload">
+        <input type="file" data-campo="arquivo" accept=".csv,.xls,.xlsx" />
+        <div class="coluna escondido" data-campo="coluna-wrap">
+          <label>Coluna com os números</label>
+          <select data-campo="coluna"></select>
+          <small data-campo="info-arquivo"></small>
+        </div>
+      </div>
+
+      <div class="painel escondido" data-painel="colar">
+        <textarea data-campo="texto" rows="4"
+          placeholder="Um número por linha (ou separados por ponto e vírgula)"></textarea>
+        <button type="button" class="btn btn-primario" data-acao="aplicar-texto">Aplicar números</button>
+      </div>
+
+      <div class="painel escondido" data-painel="aleatorio">
+        <label>Tipo de amostra</label>
+        <select data-campo="tipo-aleatorio">
+          <option value="uniforme">Reais uniformes - NÃO segue Benford</option>
+          <option value="inteiro">Inteiros uniformes - NÃO segue Benford</option>
+          <option value="loguniforme">Log-uniforme - segue Benford</option>
+          <option value="benford">Benford puro - segue por construção</option>
+        </select>
+        <label>Quantidade (faixa de 1 a 1.000.000)</label>
+        <input type="number" data-campo="qtd" value="1000" min="10" max="200000" />
+        <button type="button" class="btn btn-primario" data-acao="gerar">Gerar amostra</button>
+      </div>
+
+      <div class="metricas" data-campo="metricas"></div>
+      <div class="grafico-wrap"><canvas data-campo="grafico"></canvas></div>
+    </article>
+  </template>
+
+  <!-- Bibliotecas externas (precisam de internet na primeira carga) -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Módulos do projeto, na ordem de dependência -->
+  <script src="js/benford.js"></script>
+  <script src="js/parsers.js"></script>
+  <script src="js/random.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
