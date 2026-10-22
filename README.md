@@ -47,13 +47,3 @@ números já tipados e não passam por essa conversão.
 - Gere uma amostra **uniforme** e depois uma **log-uniforme** na mesma base:
   a segunda adere à lei, a primeira não.
 - Compare `log10(1 + 1/1)` (0,30103) com a saída de uma amostra Benford pura.
-
-## Publicar no GitHub Pages
-
-```bash
-git init
-git add .
-git commit -m "Lei de Benford: analise comparativa de 3 bases"
-git branch -M main
-git remote add origin https://github.com/SEU-USUARIO/benford.git
-git push -u origin main
